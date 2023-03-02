@@ -16,10 +16,7 @@
 #include "Shapes/House.h"
 #include "Shapes/Roof.h"
 #include "HousingEstate/SceneNode.h"
-#include "HousingEstate/InstancingObject.h"
-#include "render/lights/DirectionalLight.h"
 #include "render/lights/PointLight.h"
-#include "render/lights/SpotLight.h"
 #include "Shapes/Ground.h"
 
 App::App() {
@@ -40,7 +37,7 @@ void App::Init() {
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
     window = glfwCreateWindow(ScreenWidth, ScreenHeight,
-                              "LearnOpenGL", nullptr, nullptr);
+                              "HelloWorld", nullptr, nullptr);
     glfwMakeContextCurrent(window);
 
     // glad: load all OpenGL function pointers
@@ -94,7 +91,7 @@ void App::Run() {
 
     auto house = std::make_shared<SceneObject>(texturedShader, "house");
     house->SetMesh(cubeMesh);
-    house->LoadTexture("res/textures/stone.jpg");
+    house->LoadTexture("res/textures/stone_wall.jpg");
 
     auto roof = std::make_shared<SceneObject>(texturedShader, "roof");
     roof->SetMesh(pyramidMesh);
@@ -131,8 +128,8 @@ void App::Run() {
 
     // Move objects
     // ------------
-    house->Move(glm::vec3(0, 0, 0));
-    roof->Move(glm::vec3(0, 2, 0));
+    house->Move(glm::vec3(0, -1, 0));
+    roof->Move(glm::vec3(0, 3, 0));
 
     std::vector<std::shared_ptr<RenderBase::Light>> lights { pointLight };
 
@@ -147,7 +144,7 @@ void App::Run() {
     float positionToSet[3] = {0, 0, 0};
     float rotationToSet[3] = {0, 0, 0};
     char nameToSet[20] = "root";
-    float orbitSpeed = 5;
+    float orbitSpeed = 2;
 
     // Render loop
     // -----------
@@ -155,7 +152,7 @@ void App::Run() {
     {
         // Calculate delta time
         // --------------------
-        float currentFrame = (float)glfwGetTime();
+        auto currentFrame = (float)glfwGetTime();
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
 
@@ -204,7 +201,7 @@ void App::Run() {
 
         // Show a simple window. Begin/End pair creates a named window.
         {
-            ImGui::Begin("Controls");
+            ImGui::Begin("WASD - Movement");
             ImGui::SetWindowSize(settings_window_size);
             ImGui::SetWindowPos(settings_window_position);
             ImGui::ColorEdit3("BG color", (float*)&clear_color);
